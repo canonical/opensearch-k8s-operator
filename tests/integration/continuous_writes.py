@@ -109,9 +109,7 @@ class ContinuousWrites:
 
         client = await self._client()
         try:
-            client.indices.delete(
-                index=ContinuousWrites.INDEX_NAME, ignore_unavailable=True
-            )
+            client.indices.delete(index=ContinuousWrites.INDEX_NAME, ignore_unavailable=True)
         finally:
             client.close()
 
@@ -119,18 +117,14 @@ class ContinuousWrites:
         wait=wait_fixed(wait=5) + wait_random(0, 5),
         stop=stop_after_attempt(5),
     )
-    async def count(
-        self, unit_ip: str | None = None, preference: str | None = None
-    ) -> int:
+    async def count(self, unit_ip: str | None = None, preference: str | None = None) -> int:
         """Count the number of documents in the index."""
         client = await self._client(unit_ip)
         try:
             # refresh the index so that all writes are visible on search
             client.indices.refresh(index=ContinuousWrites.INDEX_NAME)
 
-            resp = client.count(
-                index=ContinuousWrites.INDEX_NAME, preference=preference
-            )
+            resp = client.count(index=ContinuousWrites.INDEX_NAME, preference=preference)
             return int(resp["count"])
         finally:
             client.close()
@@ -269,7 +263,7 @@ class ContinuousWrites:
         )
 
     @staticmethod
-    async def _run(
+    async def _run(  # noqa: C901
         event: Event, data_queue: Queue, starting_number: int, is_bulk: bool
     ) -> None:
         """Continuous writing."""
@@ -291,9 +285,7 @@ class ContinuousWrites:
         client = _client(data)
 
         while True:
-            if (
-                not data_queue.empty()
-            ):  # currently evaluates to false as we don't make updates
+            if not data_queue.empty():  # currently evaluates to false as we don't make updates
                 data = data_queue.get(False)
                 client.close()
                 client = _client(data)
@@ -368,9 +360,7 @@ class ContinuousWrites:
         )
 
     @staticmethod
-    def _run_async(
-        event: Event, data_queue: Queue, starting_number: int, is_bulk: bool
-    ):
+    def _run_async(event: Event, data_queue: Queue, starting_number: int, is_bulk: bool):
         """Run async code."""
         asyncio.run(ContinuousWrites._run(event, data_queue, starting_number, is_bulk))
 
@@ -397,9 +387,7 @@ async def assert_continuous_writes_consistency(
     unit_ip = await get_leader_unit_ip(ops_test, apps[0])
 
     # fetch unit ips by unit id by application
-    apps_units_ips = {
-        app: await get_application_unit_ids_ips(ops_test, app) for app in apps
-    }
+    apps_units_ips = {app: await get_application_unit_ids_ips(ops_test, app) for app in apps}
 
     # investigate the data in each shard, primaries and their respective replicas
     shards = await get_shards_by_index(ops_test, unit_ip, ContinuousWrites.INDEX_NAME)

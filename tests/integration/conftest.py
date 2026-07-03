@@ -95,12 +95,7 @@ def charm_resources() -> dict[str, str]:
     controller can fetch the image. The K8s workload image is published independently from the
     charm base variants, so we always use the upstream image declared in metadata.
     """
-
-    upstream = (
-        (METADATA.get("resources") or {})
-        .get("opensearch-image", {})
-        .get("upstream-source")
-    )
+    upstream = (METADATA.get("resources") or {}).get("opensearch-image", {}).get("upstream-source")
     if not upstream:
         raise RuntimeError(
             "K8s test charm metadata is missing resources.opensearch-image.upstream-source"
