@@ -7,70 +7,6 @@ project: opensearch-charms-single-kernel
 
 backends:
   # Derived from https://github.com/jnsgruk/zinc-k8s-operator/blob/a21eae8399eb3b9df4ddb934b837af25ef831976/spread.yaml#L11
-  lxd-vm:
-    # TODO: remove after https://github.com/canonical/spread/pull/185 merged & in charmcraft
-    type: adhoc
-    allocate: |
-      hash=$(python3 -c "import hashlib; print(hashlib.sha256('$SPREAD_PASSWORD'.encode()).hexdigest()[:6])")
-      VM_NAME="${VM_NAME:-${SPREAD_SYSTEM//./-}-${hash}}"
-      DISK="${DISK:-20}"
-      CPU="${CPU:-4}"
-      MEM="${MEM:-8}"
-
-      cloud_config="#cloud-config
-      ssh_pwauth: true
-      users:
-        - default
-        - name: runner
-          plain_text_passwd: $SPREAD_PASSWORD
-          lock_passwd: false
-          sudo: ALL=(ALL) NOPASSWD:ALL
-      "
-
-      lxc launch --vm \
-        "${SPREAD_SYSTEM//-/:}" \
-        "${VM_NAME}" \
-        -c user.user-data="${cloud_config}" \
-        -c limits.cpu="${CPU}" \
-        -c limits.memory="${MEM}GiB" \
-        -d root,size="${DISK}GiB"
-
-      # Wait for the runner user
-      while ! lxc exec "${VM_NAME}" -- id -u runner &>/dev/null; do sleep 0.5; done
-
-      # Set the instance address for spread
-      ADDRESS "$(lxc ls -f csv | grep "${VM_NAME}" | cut -d"," -f3 | cut -d" " -f1)"
-    discard: |
-      hash=$(python3 -c "import hashlib; print(hashlib.sha256('$SPREAD_PASSWORD'.encode()).hexdigest()[:6])")
-      VM_NAME="${VM_NAME:-${SPREAD_SYSTEM//./-}-${hash}}"
-      lxc delete --force "${VM_NAME}"
-    environment:
-      CONCIERGE_EXTRA_SNAPS: charmcraft
-      CONCIERGE_EXTRA_DEBS: pipx
-    systems:
-      - ubuntu-24.04:
-          username: runner
-    prepare: |
-      systemctl disable --now unattended-upgrades.service
-      systemctl mask unattended-upgrades.service
-      pipx install charmcraftcache
-      cd "$SPREAD_PATH"
-      bash scripts/build_lib_for_integration.sh
-    restore-each: |
-      cd "$SPREAD_PATH"
-      # Revert python-libjuju version override
-      git restore pyproject.toml poetry.lock
-
-      # Use instead of `concierge restore` to save time between tests
-      # For example, with microk8s, using `concierge restore` takes twice as long as this (e.g. 6
-      # min instead of 3 min between every spread job)
-      juju destroy-model --force --no-wait --destroy-storage --no-prompt concierge-microk8s:testing
-      juju destroy-model --force --no-wait --destroy-storage --no-prompt concierge-lxd:testing
-      juju kill-controller --no-prompt concierge-microk8s
-      juju kill-controller --no-prompt concierge-lxd
-    restore: |
-      rm -rf "$SPREAD_PATH"
-
   github-ci:
     type: adhoc
     # Only run on CI
@@ -156,29 +92,10 @@ prepare: |
     microk8s start
   fi
 
-  if [[ $SPREAD_SUITE == *"k8s"* || $SPREAD_TASK == *"oauth"* ]]
-  then
-    concierge prepare --trace -c concierge-microk8s.yaml
-    # microk8s config | juju add-k8s my-k8s --client
-    # juju bootstrap my-k8s concierge-microk8s
-    # juju add-model --controller concierge-microk8s testing
-  fi
-
-  if [[ $SPREAD_SUITE == *"vm"* ]]
-  then
-    concierge prepare --trace -c concierge-lxd.yaml --extra-debs pipx
-    if [[ $SPREAD_TASK == *"oauth"* ]]
-    then
-      mkdir -p ~/.kube
-      microk8s.kubectl config view --raw > ~/.kube/config
-      export LOCAL_IP="127.0.0.1"
-      export PUBLIC_IP=$(ip -4 -j route get 2.2.2.2 | jq -r '.[] | .prefsrc')
-      sed -i 's/'${LOCAL_IP}'/'${PUBLIC_IP}'/g' ~/.kube/config
-      cat ~/.kube/config | juju add-k8s uk8s --client --controller $(/snap/bin/juju show-controller | yq "keys | .[0]")
-      # microk8s config | juju add-k8s uk8s --client
-      # juju add-model --controller concierge-lxd testing-uk8s
-    fi
-  fi
+  concierge prepare --trace -c concierge-microk8s.yaml --extra-debs pipx
+  # microk8s config | juju add-k8s my-k8s --client
+  # juju bootstrap my-k8s concierge-microk8s
+  # juju add-model --controller concierge-microk8s testing
 
   # Install charmcraft & pipx (on lxd-vm backend)
   pipx install tox poetry
@@ -186,22 +103,10 @@ prepare-each: |
   cd "$SPREAD_PATH"
 
   # `concierge prepare` needs to be run for each spread job in case Juju version changed
-  if [[ $SPREAD_SUITE == *"vm"* ]]
-  then
-    concierge prepare --trace -c concierge-lxd.yaml
-  else
-    concierge prepare --trace -c concierge-microk8s.yaml
-  fi
+  concierge prepare --trace -c concierge-microk8s.yaml --extra-debs pipx
 
-  if [[ $SPREAD_SUITE == *"vm"* ]]
-  then
-    juju switch concierge-lxd
-  else
-    juju switch concierge-microk8s
-  fi
+  juju switch concierge-microk8s
 
   # Unable to set constraint on all models because of Juju bug:
   # https://bugs.launchpad.net/juju/+bug/2065050
   juju set-model-constraints arch="$(dpkg --print-architecture)"
-
-# Only restore on lxd backend—no need to restore on CI
