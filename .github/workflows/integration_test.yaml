@@ -30,29 +30,27 @@ jobs:
           import pathlib
           import os
           import subprocess
-
           spread_jobs = (
               subprocess.run(
-                  [pathlib.Path.home() / "go/bin/spread", "-list", "github-ci"],
-                  capture_output=True,
-                  check=True,
-                  text=True,
+                [pathlib.Path.home() / "go/bin/spread", "-list", "github-ci"],
+                capture_output=True,
+                check=True,
+                text=True,
               )
               .stdout.strip()
               .split("\n")
           )
           jobs = []
           for job in spread_jobs:
-              # Example `job`: "github-ci:ubuntu-24.04:tests/spread/test_charm.py:juju36"
+              # Example `job`: "github-ci:ubuntu-24.04:tests/spread/opensearch/k8s/test_charm.py:ubuntu22"
               _, runner, task, variant = job.split(":")
               # Example: "test_charm.py"
               task = task.removeprefix("tests/spread/")
-              # For IS-hosted runners
-              if "arm64" in runner:
+              if runner.endswith("-arm"):
                   architecture = "arm64"
               else:
                   architecture = "amd64"
-              # Example: "test_charm.py:juju36 | amd64"
+              # Example: "test_charm.py | amd64"
               name = f"{task}:{variant} | {architecture}"
               # ":" character not valid in GitHub Actions artifact
               name_in_artifact = f"{task.replace('/', '-')}-{variant}-{architecture}"
@@ -90,7 +88,7 @@ jobs:
     needs:
       - collect-integration-tests
     runs-on: ${{ matrix.job.runner }}
-    timeout-minutes: 217 # Sum of steps `timeout-minutes` + 5
+    timeout-minutes: 226 # Sum of steps `timeout-minutes` + 5
     steps:
       - name: Disk usage
         timeout-minutes: 1
@@ -112,11 +110,17 @@ jobs:
         with:
           pattern: ${{ inputs.artifact-prefix }}-*
           merge-multiple: true
-      # TODO Remove pinned image when problem is resolved on jammy
-      - name: Pin lxc image for jammy
+      - name: Configure sysctl
         run: |
-          sudo lxc image copy ubuntu:568f69ff1166 local:
-          sudo lxc image alias create "juju/ubuntu@22.04/amd64" 568f69ff1166
+          sudo tee -a /etc/sysctl.conf > /dev/null <<EOT
+          vm.max_map_count=262144
+          vm.swappiness=0
+          net.ipv4.tcp_retries2=5
+          fs.file-max=1048576
+          EOT
+
+          sudo sysctl -p
+
       - name: Run spread job
         timeout-minutes: 180
         id: spread
@@ -137,7 +141,7 @@ jobs:
         # Only upload results from one spread system & one spread variant
         # Allure can only process one result per pytest test ID. If parameterization is done via
         # spread instead of pytest, there will be overlapping pytest test IDs.
-        if: ${{ (success() || (failure() && steps.spread.outcome == 'failure')) && startsWith(matrix.job.spread_job, 'github-ci:') && endsWith(matrix.job.spread_job, ':ubuntu24') && github.event_name == 'schedule' && github.run_attempt == '1' }}
+        if: ${{ (success() || (failure() && steps.spread.outcome == 'failure')) && startsWith(matrix.job.spread_job, 'github-ci:') && github.event_name == 'schedule' && github.run_attempt == '1' }}
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-integration-test-${{ matrix.job.name_in_artifact }}
@@ -148,11 +152,7 @@ jobs:
         run: snap list
       - name: Select model
         timeout-minutes: 1
-        # `!contains(matrix.job.spread_job, 'juju29')` workaround for juju 2 error:
-        # "ERROR cannot acquire lock file to read controller concierge-microk8s: unable to open
-        # /tmp/juju-store-lock-3635383939333230: permission denied"
-        # Unable to workaround error with `sudo rm /tmp/juju-*`
-        if: ${{ !contains(matrix.job.spread_job, 'juju29') && (success() || (failure() && steps.spread.outcome == 'failure')) }}
+        if: ${{ (success() || (failure() && steps.spread.outcome == 'failure')) }}
         id: juju-switch
         run: |
           # sudo needed since spread runs scripts as root
@@ -161,19 +161,19 @@ jobs:
           mkdir ~/logs/
       - name: juju status
         timeout-minutes: 1
-        if: ${{ !contains(matrix.job.spread_job, 'juju29') && (success() || (failure() && steps.spread.outcome == 'failure')) }}
+        if: ${{ success() || (failure() && steps.spread.outcome == 'failure') }}
         run: sudo juju status --color --relations | tee ~/logs/juju-status.txt
       - name: juju debug-log
         timeout-minutes: 3
-        if: ${{ !contains(matrix.job.spread_job, 'juju29') && (success() || (failure() && steps.spread.outcome == 'failure')) }}
+        if: ${{ success() || (failure() && steps.spread.outcome == 'failure') }}
         run: sudo juju debug-log --color --replay --no-tail | tee ~/logs/juju-debug-log.txt
       - name: jhack tail
         timeout-minutes: 3
-        if: ${{ !contains(matrix.job.spread_job, 'juju29') && (success() || (failure() && steps.spread.outcome == 'failure')) }}
+        if: ${{ success() || (failure() && steps.spread.outcome == 'failure') }}
         run: sudo jhack tail --printer raw --replay --no-watch | tee ~/logs/jhack-tail.txt
       - name: Upload logs
         timeout-minutes: 5
-        if: ${{ !contains(matrix.job.spread_job, 'juju29') && (success() || (failure() && steps.spread.outcome == 'failure')) }}
+        if: ${{ success() || (failure() && steps.spread.outcome == 'failure') }}
         uses: actions/upload-artifact@v4
         with:
           name: logs-integration-test-${{ matrix.job.name_in_artifact }}
