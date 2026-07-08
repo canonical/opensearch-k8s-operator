@@ -109,7 +109,7 @@ async def deploy_client_charm(ops_test: OpsTest):
     """Deploy the client charm."""
     if CLIENT_CHARM not in ops_test.model.applications:
         await ops_test.model.deploy(
-            "./tests/dummy-client-charm/dummy-client-charm_amd64.charm",
+            "./tests/dummy-client-charm/dummy-client-charm_ubuntu@24.04-amd64.charm",
             CLIENT_CHARM,
         )
         await ops_test.model.wait_for_idle(apps=[CLIENT_CHARM])

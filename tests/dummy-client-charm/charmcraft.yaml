@@ -16,7 +16,6 @@ description: |
 # Documentation:
 # https://documentation.ubuntu.com/charmcraft/stable/howto/build-guides/select-platforms/
 platforms:
-  ubuntu@22.04:amd64:
   ubuntu@24.04:amd64:
 
 parts:
