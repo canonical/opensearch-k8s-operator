@@ -33,7 +33,6 @@ METADATA = yaml.safe_load(Path("./metadata.yaml").read_text())
 
 APP_NAME = METADATA["name"]
 
-SERIES = "jammy"
 UNIT_IDS = [0, 1, 2]
 IDLE_PERIOD = 75
 

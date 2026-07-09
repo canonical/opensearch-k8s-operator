@@ -1,12 +1,12 @@
-# Copyright 2024 Canonical Ltd.
+# Copyright 2026 Canonical Ltd.
 # See LICENSE file for licensing details.
 name: Release to latest/edge
 
 on:
   push:
     paths-ignore:
-      - 'docs/**'
-      - '**.md'
+      - "docs/**"
+      - "**.md"
     branches:
       - 2/edge
 
@@ -16,24 +16,7 @@ jobs:
     uses: ./.github/workflows/ci.yaml
     secrets: inherit
     permissions:
-      contents: write  # Needed for Allure Report
-
-  # release-libraries:
-  #   name: Release libraries
-  #   needs:
-  #     - ci-tests
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 60
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Release charm libraries
-  #       uses: canonical/charming-actions/release-libraries@2.3.0
-  #       with:
-  #         credentials: ${{ secrets.CHARMHUB_TOKEN }}
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
+      contents: write # Needed for Allure Report
 
   release:
     name: Release charm
@@ -46,4 +29,4 @@ jobs:
     secrets:
       charmhub-token: ${{ secrets.CHARMHUB_TOKEN }}
     permissions:
-      contents: write  # Needed to create git tags
+      contents: write # Needed to create git tags
