@@ -3,7 +3,7 @@
 # This file defines the spread backends and configuration.
 # This is used by the CI to run the tests, but can also be used locally.
 
-project: opensearch-charms-single-kernel
+project: opensearch-k8s-operator
 
 backends:
   # Derived from https://github.com/jnsgruk/zinc-k8s-operator/blob/a21eae8399eb3b9df4ddb934b837af25ef831976/spread.yaml#L11
@@ -37,12 +37,9 @@ backends:
       CONCIERGE_MICROK8S_CHANNEL: 1.34-strict/stable
       CONCIERGE_EXTRA_DEBS: pipx
     systems:
-      - self-hosted-linux-amd64-noble-medium:
-          username: ubuntu
       - self-hosted-linux-amd64-noble-large:
           username: ubuntu
-      - self-hosted-linux-amd64-noble-xlarge:
-          username: ubuntu
+
 suites:
   tests/spread/:
     summary: Spread tests for OpenSearch Kubernetes
