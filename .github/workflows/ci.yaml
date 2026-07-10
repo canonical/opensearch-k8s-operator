@@ -92,7 +92,8 @@ jobs:
   integration-test:
     name: Integration test charm
     needs:
-      - lint
+      - lint-workflows
+      - lint-charm
       - build
     uses: ./.github/workflows/integration_test.yaml
     with:
