@@ -22,15 +22,32 @@ on:
         value: ${{ jobs.build.outputs.artifact-prefix }}
 
 jobs:
-  lint:
-    name: Lint
-    uses: canonical/data-platform-workflows/.github/workflows/lint.yaml@v32.1.0
+  lint-workflows:
+    name: Lint workflow files
+    uses: canonical/data-platform-workflows/.github/workflows/lint_workflows.yaml@v50.0.0
 
-  promtool:
-    runs-on: ubuntu-22.04
+  lint-charm:
+    name: Lint charm
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install tox & poetry
+        run: |
+          pipx install tox
+          pipx install poetry
+      - name: Run linter
+        run: tox run -e lint
+    permissions:
+      contents: read
+
+  promtool:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
 
       # prometheus snap includes promtool
       - name: Install prometheus snap
@@ -46,7 +63,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Check libs
@@ -66,7 +83,7 @@ jobs:
           - .
           - tests/dummy-client-charm
     name: Build charm | ${{ matrix.path }}
-    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v32.1.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v50.0.0
     with:
       path-to-charm-directory: ${{ matrix.path }}
       # remove when ccc is fixed and works
