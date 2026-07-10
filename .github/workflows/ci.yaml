@@ -95,7 +95,8 @@ jobs:
       path-to-charm-directory: ${{ matrix.path }}
       # remove when ccc is fixed and works
       cache: false
-    permissions: {}
+    permissions:
+      contents: read
 
   integration-test:
     name: Integration test charm
