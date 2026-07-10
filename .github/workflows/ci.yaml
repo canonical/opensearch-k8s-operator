@@ -25,7 +25,8 @@ jobs:
   lint-workflows:
     name: Lint workflow files
     uses: canonical/data-platform-workflows/.github/workflows/lint_workflows.yaml@v50.0.0
-    permissions: {}
+    permissions:
+      contents: read
 
   lint-charm:
     name: Lint charm
