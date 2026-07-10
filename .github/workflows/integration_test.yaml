@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Set up environment
         run: |
           sudo snap install go --classic
@@ -96,6 +98,8 @@ jobs:
       - name: Checkout
         timeout-minutes: 3
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - name: Set up environment
         timeout-minutes: 5
         run: sudo snap install charmcraft --classic
@@ -206,6 +210,7 @@ jobs:
       - name: Checkout GitHub pages branch
         uses: actions/checkout@v7
         with:
+          persist-credentials: false
           ref: gh-pages-beta
           path: repo/
       - name: Download default test results
