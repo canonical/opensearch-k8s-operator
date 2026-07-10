@@ -25,6 +25,7 @@ jobs:
   lint-workflows:
     name: Lint workflow files
     uses: canonical/data-platform-workflows/.github/workflows/lint_workflows.yaml@v50.0.0
+    permissions: {}
 
   lint-charm:
     name: Lint charm
@@ -58,6 +59,7 @@ jobs:
       - name: Check validity of prometheus alert rules
         run: |
           promtool check rules src/alert_rules/prometheus/*.yaml
+    permissions: {}
 
   lib-check:
     name: Check libraries
@@ -77,6 +79,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           use-labels: false
           fail-build: ${{ github.event_name == 'pull_request' }}
+    permissions: {}
 
   build:
     strategy:
@@ -91,6 +94,7 @@ jobs:
       path-to-charm-directory: ${{ matrix.path }}
       # remove when ccc is fixed and works
       cache: false
+    permissions: {}
 
   integration-test:
     name: Integration test charm
@@ -101,6 +105,5 @@ jobs:
     uses: ./.github/workflows/integration_test.yaml
     with:
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
-    secrets: inherit
     permissions:
       contents: write # Needed for Allure Report
