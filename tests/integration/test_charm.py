@@ -47,7 +47,7 @@ DEFAULT_NUM_UNITS = 2
 @pytest.mark.abort_on_fail
 @pytest.mark.skip_if_deployed
 async def test_deploy_and_remove_single_unit(
-    charm, series, ops_test: OpsTest, substrate, charm_resources
+    charm, ops_test: OpsTest, substrate, charm_resources
 ) -> None:
     """Build and deploy OpenSearch with a single unit and remove it."""
     # health of a single unit is yellow when writing cw
@@ -59,7 +59,6 @@ async def test_deploy_and_remove_single_unit(
         substrate,
         APP_NAME,
         1,
-        series=series,
         config=CONFIG_OPTS,
         resources=charm_resources,
     )
@@ -93,14 +92,12 @@ async def test_deploy_and_remove_single_unit(
 
 @pytest.mark.abort_on_fail
 @pytest.mark.skip_if_deployed
-async def test_build_and_deploy(
-    charm, series, ops_test: OpsTest, substrate, charm_resources
-) -> None:
+async def test_build_and_deploy(charm, ops_test: OpsTest, substrate, charm_resources) -> None:
     """Build and deploy a couple of OpenSearch units."""
     model_config = MODEL_CONFIG
     model_config["update-status-hook-interval"] = "1m"
 
-    await ops_test.model.set_config(MODEL_CONFIG)
+    await ops_test.model.set_config(model_config)
 
     await deploy_opensearch(
         ops_test,
@@ -108,7 +105,6 @@ async def test_build_and_deploy(
         substrate,
         APP_NAME,
         DEFAULT_NUM_UNITS,
-        series=series,
         config=CONFIG_OPTS,
         resources=charm_resources,
     )
