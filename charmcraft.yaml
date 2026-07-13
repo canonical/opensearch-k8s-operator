@@ -4,7 +4,6 @@
 type: charm
 # Note: name, summary, and description are defined in metadata.yaml
 platforms:
-  ubuntu@22.04:amd64:
   ubuntu@24.04:amd64:
 # Files implicitly created by charmcraft without a part:
 # - dispatch (https://github.com/canonical/charmcraft/pull/1898)
@@ -60,12 +59,12 @@ parts:
     source: .
     after:
       - poetry-deps
-    poetry-export-extra-args: ['--only', 'main,charm-libs', '--without-hashes']
+    poetry-export-extra-args: ["--only", "main,charm-libs", "--without-hashes"]
     build-packages:
-      - git         # Needed for dynamic versioning
-      - libffi-dev  # Needed to build Python dependencies with Rust from source
-      - libssl-dev  # Needed to build Python dependencies with Rust from source
-      - pkg-config  # Needed to build Python dependencies with Rust from source
+      - git # Needed for dynamic versioning
+      - libffi-dev # Needed to build Python dependencies with Rust from source
+      - libssl-dev # Needed to build Python dependencies with Rust from source
+      - pkg-config # Needed to build Python dependencies with Rust from source
     override-build: |
       # Workaround for https://github.com/canonical/charmcraft/issues/2068
       # rustup used to install rustc and cargo, which are needed to build Python dependencies with Rust from source
