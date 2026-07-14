@@ -1,0 +1,101 @@
+# Copyright 2026 Canonical Ltd.
+# See LICENSE file for licensing details.
+# This file defines the spread backends and configuration.
+# This is used by the CI to run the tests, but can also be used locally.
+
+project: opensearch-k8s-operator
+
+backends:
+  # Derived from https://github.com/jnsgruk/zinc-k8s-operator/blob/a21eae8399eb3b9df4ddb934b837af25ef831976/spread.yaml#L11
+  github-ci:
+    type: adhoc
+    # Only run on CI
+    manual: true
+    # HACK: spread requires runners to be accessible via SSH
+    # Configure local sshd & instruct spread to connect to the same machine spread is running on
+    # (spread cannot provision GitHub Actions runners, so we provision a GitHub Actions runner for
+    # each spread job & select a single job when running spread)
+    # Derived from https://github.com/jnsgruk/zinc-k8s-operator/blob/a21eae8399eb3b9df4ddb934b837af25ef831976/spread.yaml#L47
+    allocate: |
+      sudo tee /etc/ssh/sshd_config.d/10-spread-github-ci.conf << 'EOF'
+      PasswordAuthentication yes
+      PermitEmptyPasswords yes
+      EOF
+
+      sudo systemctl daemon-reload
+      sudo systemctl start ssh
+
+      sudo passwd -d ubuntu
+
+      ADDRESS localhost
+    # HACK: spread does not pass environment variables set on runner
+    # Manually pass specific environment variables
+    environment:
+      CI: "$(HOST: echo $CI)"
+      CHARM_UBUNTU_BASE: "$(HOST: echo $CHARM_UBUNTU_BASE)"
+      DOCKERHUB_MIRROR: "$(HOST: echo $DOCKERHUB_MIRROR)"
+      CONCIERGE_MICROK8S_CHANNEL: 1.34-strict/stable
+      CONCIERGE_EXTRA_DEBS: pipx
+    systems:
+      - self-hosted-linux-amd64-noble-large:
+          username: ubuntu
+
+suites:
+  tests/spread/:
+    summary: Spread tests for OpenSearch Kubernetes
+
+path: /root/spread_project
+
+kill-timeout: 3h
+environment:
+  PATH: $PATH:$(pipx environment --value PIPX_BIN_DIR)
+  CONCIERGE_JUJU_CHANNEL: 3.6/stable
+  CHARM_UBUNTU_BASE/ubuntu24: 24.04
+prepare: |
+  snap refresh --hold
+  chown -R root:root "$SPREAD_PATH"
+  cd "$SPREAD_PATH"
+  snap install --classic concierge
+
+  if [[ -n "$DOCKERHUB_MIRROR" ]] && [[ $SPREAD_SUITE == *"k8s"* || $SPREAD_TASK == *"oauth"* ]]
+  then
+    # Running on IS-hosted runner; configure microk8s to use Docker Hub mirror
+    # Run before concierge prepare because of https://github.com/canonical/concierge/issues/75
+
+    snap install microk8s --channel "$CONCIERGE_MICROK8S_CHANNEL" --classic
+
+    # Wait for microk8s to populate iptables
+    # https://chat.canonical.com/canonical/pl/jo5cg6wqjjrudqd5ybj6hhttee
+    until [[ -n $(iptables --list | grep -i "microk8s") ]]
+    do
+      echo "MicroK8s has not yet configured iptables."
+      sleep 10
+    done
+
+    tee /var/snap/microk8s/current/args/certs.d/docker.io/hosts.toml << EOF
+    server = "$DOCKERHUB_MIRROR"
+    [host."${DOCKERHUB_MIRROR#'https://'}"]
+    capabilities = ["pull", "resolve"]
+  EOF
+    microk8s stop
+    microk8s start
+  fi
+
+  concierge prepare --trace -c concierge-microk8s.yaml --extra-debs pipx
+  # microk8s config | juju add-k8s my-k8s --client
+  # juju bootstrap my-k8s concierge-microk8s
+  # juju add-model --controller concierge-microk8s testing
+
+  # Install charmcraft & pipx (on lxd-vm backend)
+  pipx install tox poetry
+prepare-each: |
+  cd "$SPREAD_PATH"
+
+  # `concierge prepare` needs to be run for each spread job in case Juju version changed
+  concierge prepare --trace -c concierge-microk8s.yaml --extra-debs pipx
+
+  juju switch concierge-microk8s
+
+  # Unable to set constraint on all models because of Juju bug:
+  # https://bugs.launchpad.net/juju/+bug/2065050
+  juju set-model-constraints arch="$(dpkg --print-architecture)"

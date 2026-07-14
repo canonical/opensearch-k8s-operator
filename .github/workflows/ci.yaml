@@ -1,0 +1,111 @@
+# Copyright 2026 Canonical Ltd.
+# See LICENSE file for licensing details.
+name: Tests
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+      - ".gitignore"
+  schedule:
+    - cron: "53 0 * * *" # Daily at 00:53 UTC
+  # Triggered on push to branch "main" by .github/workflows/release.yaml
+  workflow_call:
+    outputs:
+      artifact-prefix:
+        description: build_charm.yaml `artifact-prefix` output
+        value: ${{ jobs.build.outputs.artifact-prefix }}
+
+jobs:
+  lint-workflows:
+    name: Lint workflow files
+    uses: canonical/data-platform-workflows/.github/workflows/lint_workflows.yaml@v50.0.0
+    permissions:
+      contents: read
+
+  lint-charm:
+    name: Lint charm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install tox & poetry
+        run: |
+          pipx install tox
+          pipx install poetry
+      - name: Run linter
+        run: tox run -e lint
+    permissions:
+      contents: read
+
+  promtool:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # prometheus snap includes promtool
+      - name: Install prometheus snap
+        run: sudo snap install prometheus
+
+      - name: Check validity of prometheus alert rules
+        run: |
+          promtool check rules src/alert_rules/prometheus/*.yaml
+    permissions: {}
+
+  lib-check:
+    name: Check libraries
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Check libs
+        uses: canonical/charming-actions/check-libraries@2.7.0
+        continue-on-error: true
+        with:
+          credentials: ${{ secrets.CHARMHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          use-labels: false
+          fail-build: ${{ github.event_name == 'pull_request' }}
+    permissions: {}
+
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        path:
+          - .
+          - tests/dummy-client-charm
+    name: Build charm | ${{ matrix.path }}
+    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v50.0.0
+    with:
+      path-to-charm-directory: ${{ matrix.path }}
+      # remove when ccc is fixed and works
+      cache: false
+    permissions:
+      contents: read
+
+  integration-test:
+    name: Integration test charm
+    needs:
+      - lint-workflows
+      - lint-charm
+      - build
+    uses: ./.github/workflows/integration_test.yaml
+    with:
+      artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
+    permissions:
+      contents: write # Needed for Allure Report
