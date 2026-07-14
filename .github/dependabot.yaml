@@ -7,7 +7,7 @@ updates:
       day: "sunday"
       time: "06:00"
     cooldown:
-      default-days: 3
+      default-days: 7
     groups:
       python-dependencies:
         patterns:
