@@ -210,7 +210,8 @@ jobs:
       - name: Checkout GitHub pages branch
         uses: actions/checkout@v7
         with:
-          persist-credentials: false
+          # Credentials needed to push report in "Update GitHub pages branch" step
+          persist-credentials: true
           ref: gh-pages-beta
           path: repo/
       - name: Download default test results
