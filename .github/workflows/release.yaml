@@ -1,6 +1,6 @@
 # Copyright 2026 Canonical Ltd.
 # See LICENSE file for licensing details.
-name: Release to latest/edge
+name: Release to 2/edge
 
 on:
   push:
@@ -23,8 +23,9 @@ jobs:
       - ci-tests
     uses: canonical/data-platform-workflows/.github/workflows/release_charm_edge.yaml@v50.0.0
     with:
-      channel: 2/edge
+      track: "2"
       artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
+      charmcraft-snap-revision: "8022"
     secrets:
       charmhub-token: ${{ secrets.CHARMHUB_TOKEN }}
     permissions:
