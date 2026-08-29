@@ -1,0 +1,202 @@
+[33mWARNING [0m juju.client.connection:connection.py:858 unexpected facade SSHServer received from the controller
+[32mINFO    [0m pytest_operator.plugin:plugin.py:795 Connecting to existing model concierge-microk8s:testing on unspecified cloud
+[33mWARNING [0m juju.client.connection:connection.py:858 unexpected facade SSHServer received from the controller
+[33mWARNING [0m juju.client.connection:connection.py:858 unexpected facade SSHSession received from the controller
+[33mWARNING [0m juju.client.connection:connection.py:858 unexpected facade SSHTunneler received from the controller
+[33mWARNING [0m juju.client.connection:connection.py:858 unexpected facade SecretsRevoker received from the controller
+[33mWARNING [0m juju.client.connection:connection.py:858 unexpected facade SSHServer received from the controller
+[32mINFO    [0m juju.model:__init__.py:2301 Deploying local:dummy-client-charm-0
+[32mINFO    [0m juju.model:__init__.py:3254 Waiting for model:
+  client-charm/0 [allocating] waiting: installing agent
+[32mINFO    [0m juju.model:__init__.py:2301 Deploying local:opensearch-k8s-0
+[32mINFO    [0m juju.model:__init__.py:2301 Deploying ch:amd64/noble/self-signed-certificates-586
+[32mINFO    [0m integration.helpers:helpers.py:486 
+
+
+
+[32mINFO    [0m integration.helpers:helpers.py:487 Model    Controller          Cloud/Region        Version  SLA          Timestamp
+testing  concierge-microk8s  microk8s/localhost  3.6.27   unsupported  02:22:49Z
+
+App                       Version  Status   Scale  Charm                     Channel   Rev  Address         Exposed  Message
+client-charm                       active       1  dummy-client-charm                    0  10.152.183.123  no       
+opensearch-k8s                     waiting    0/1  opensearch-k8s                        0                  no       installing agent
+self-signed-certificates           waiting    0/1  self-signed-certificates  1/stable  586                  no       installing agent
+
+Unit                        Workload  Agent       Address    Ports  Message
+client-charm/0*             active    idle        10.1.53.9         
+opensearch-k8s/0            waiting   allocating                    installing agent
+self-signed-certificates/0  waiting   allocating                    installing agent
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:22:49 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:420 opensearch-k8s -- expected units: 1 -- current: 0
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:22:59 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:420 opensearch-k8s -- expected units: 1 -- current: 0
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:23:10 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:429 	App: opensearch-k8s - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:430 
+	app: opensearch waiting -- message: agent initialising
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [allocating (since: 02:22:45)] waiting: agent initialising
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:23:21 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:23:21)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:23:32 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:23:32)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:23:43 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:429 	App: opensearch-k8s - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:430 
+	app: opensearch maintenance -- message: Waiting for TLS to be fully configured...
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:23:43)] maintenance: Waiting for TLS to be fully configured...
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:23:54 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:429 	App: opensearch-k8s - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:430 
+	app: opensearch maintenance -- message: Waiting for TLS to be fully configured...
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [idle (since: 02:23:49)] maintenance: Waiting for TLS to be fully configured...
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:24:05 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:429 	App: opensearch-k8s - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:430 
+	app: opensearch maintenance -- message: Waiting for TLS to be fully configured...
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [idle (since: 02:23:49)] maintenance: Waiting for TLS to be fully configured...
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:24:16 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:429 	App: opensearch-k8s - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:430 
+	app: opensearch maintenance -- message: Waiting for TLS to be fully configured...
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:24:16)] maintenance: Waiting for TLS to be fully configured...
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:24:27 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:24:26)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:24:38 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:24:26)] waiting: Waiting for OpenSearch to start...
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:24:49 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:24:26)] maintenance: Initializing the security index...
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:25:00 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:24:26)] maintenance: Initializing the security index...
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:25:11 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:25:11)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:25:22 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:25:20)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:25:33 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [executing (since: 02:25:32)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:25:44 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [idle (since: 02:25:42)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:25:55 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [idle (since: 02:25:42)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:26:06 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:439 	App: opensearch-k8s - Units - conditions unmet.
+[32mINFO    [0m integration.helpers:helpers.py:440 
+	app: opensearch active -- message: None
+		opensearch-k8s-0.5c0* -- (10.1.53.14) -- [idle (since: 02:25:42)] active: 
+
+[32mINFO    [0m integration.helpers:helpers.py:494 
+
+
+02:26:17 -- Waiting for model...
+[32mINFO    [0m integration.helpers:helpers.py:503 02:26:17 -- Waiting for model: complete.
+
+
+
+[32mINFO    [0m integration.continuous_writes:continuous_writes.py:383 Continuous writes result: namespace(max_stored_id=133, count=134, last_expected_id=133)
+[32mINFO    [0m integration.helpers:helpers.py:805 Calling through client-charm for opensearch-k8s-0.5c0: GET - opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local route: /series_index/_search_shards

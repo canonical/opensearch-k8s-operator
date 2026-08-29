@@ -1,0 +1,4 @@
+[32mINFO    [0m integration.helpers:helpers.py:805 Calling through client-charm for opensearch-k8s-0.5c0: GET - opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local route: /
+[32mINFO    [0m integration.helpers:helpers.py:805 Calling through client-charm for opensearch-k8s-0.5c0: GET - opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local route: /
+[32mINFO    [0m integration.helpers:helpers.py:805 Calling through client-charm for opensearch-k8s-0.5c0: GET - opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local route: /
+[32mINFO    [0m integration.helpers:helpers.py:805 Calling through client-charm for opensearch-k8s-0.5c0: GET - opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local route: /
