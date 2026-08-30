@@ -1,0 +1,356 @@
+[32mINFO    [0m integration.helpers:helpers.py:1206 Apps inside app_name: {'client-charm': {'charm': 'local:dummy-client-charm-0', 'base': {'name': 'ubuntu', 'channel': '24.04'}, 'charm-origin': 'local', 'charm-name': 'dummy-client-charm', 'charm-rev': 0, 'scale': 1, 'provider-id': '536a7109-d9e9-4403-851a-f5f8c492b1d0', 'address': '10.152.183.78', 'exposed': False, 'application-status': {'current': 'active', 'since': '30 Aug 2026 01:49:49Z'}, 'units': {'client-charm/0': {'workload-status': {'current': 'active', 'since': '30 Aug 2026 01:49:49Z'}, 'juju-status': {'current': 'idle', 'since': '30 Aug 2026 02:06:00Z', 'version': '3.6.27'}, 'leader': True, 'address': '10.1.53.10', 'provider-id': 'client-charm-0'}}}, 'opensearch-k8s': {'charm': 'local:opensearch-k8s-1', 'base': {'name': 'ubuntu', 'channel': '24.04'}, 'charm-origin': 'local', 'charm-name': 'opensearch-k8s', 'charm-rev': 1, 'scale': 2, 'provider-id': 'cb214061-c274-427f-8ba8-19e8c5a752de', 'address': '10.152.183.212', 'exposed': False, 'application-status': {'current': 'active', 'since': '30 Aug 2026 01:58:29Z'}, 'relations': {'certificates': [{'related-application': 'self-signed-certificates', 'interface': 'tls-certificates', 'scope': 'global'}], 'node-lock-fallback': [{'related-application': 'opensearch-k8s', 'interface': 'node_lock_fallback', 'scope': 'global'}], 'opensearch-peers': [{'related-application': 'opensearch-k8s', 'interface': 'opensearch_peers', 'scope': 'global'}], 'status-peers': [{'related-application': 'opensearch-k8s', 'interface': 'status-peers', 'scope': 'global'}], 'upgrade-version-a': [{'related-application': 'opensearch-k8s', 'interface': 'upgrade', 'scope': 'global'}]}, 'units': {'opensearch-k8s/0': {'workload-status': {'current': 'active', 'since': '30 Aug 2026 01:59:12Z'}, 'juju-status': {'current': 'idle', 'since': '30 Aug 2026 02:05:54Z', 'version': '3.6.27'}, 'leader': True, 'address': '10.1.53.19', 'provider-id': 'opensearch-k8s-0'}, 'opensearch-k8s/1': {'workload-status': {'current': 'active', 'since': '30 Aug 2026 01:59:32Z'}, 'juju-status': {'current': 'idle', 'since': '30 Aug 2026 02:05:58Z', 'version': '3.6.27'}, 'address': '10.1.53.21', 'provider-id': 'opensearch-k8s-1'}}, 'endpoint-bindings': {'': 'alpha', 'azure-credentials': 'alpha', 'certificates': 'alpha', 'gcs-credentials': 'alpha', 'grafana-dashboard': 'alpha', 'jwt-configuration': 'alpha', 'logging': 'alpha', 'metrics-endpoint': 'alpha', 'node-lock-fallback': 'alpha', 'oauth': 'alpha', 'opensearch-client': 'alpha', 'opensearch-peers': 'alpha', 'peer-cluster': 'alpha', 'peer-cluster-orchestrator': 'alpha', 's3-credentials': 'alpha', 'smtp': 'alpha', 'status-peers': 'alpha', 'upgrade-version-a': 'alpha'}}, 'self-signed-certificates': {'charm': 'self-signed-certificates', 'base': {'name': 'ubuntu', 'channel': '24.04'}, 'charm-origin': 'charmhub', 'charm-name': 'self-signed-certificates', 'charm-rev': 586, 'charm-channel': '1/stable', 'scale': 1, 'provider-id': 'f5f493e1-3440-44c2-ae27-cdb030d3b761', 'address': '10.152.183.91', 'exposed': False, 'application-status': {'current': 'active', 'since': '30 Aug 2026 01:58:19Z'}, 'relations': {'certificates': [{'related-application': 'opensearch-k8s', 'interface': 'tls-certificates', 'scope': 'global'}]}, 'units': {'self-signed-certificates/0': {'workload-status': {'current': 'active', 'since': '30 Aug 2026 01:58:19Z'}, 'juju-status': {'current': 'idle', 'since': '30 Aug 2026 01:58:27Z', 'version': '3.6.27'}, 'leader': True, 'address': '10.1.53.22', 'provider-id': 'self-signed-certificates-0'}}, 'endpoint-bindings': {'': 'alpha', 'certificates': 'alpha', 'send-ca-cert': 'alpha', 'tracing': 'alpha'}}}
+[32mINFO    [0m integration.helpers:helpers.py:805 Calling through client-charm for opensearch-k8s-0.35a: PUT - opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local route: /_plugins/_security/api/internalusers/my_user
+[32mINFO    [0m integration.helpers:helpers.py:805 Calling through client-charm for opensearch-k8s-0.35a: GET - opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local route: /_plugins/_security/api/internalusers/my_user
+[32mINFO    [0m pytest_operator.plugin:plugin.py:937 Model status:
+
+Model    Controller          Cloud/Region        Version  SLA          Timestamp
+testing  concierge-microk8s  microk8s/localhost  3.6.27   unsupported  02:11:38Z
+
+App                       Version  Status  Scale  Charm                     Channel   Rev  Address         Exposed  Message
+client-charm                       active      1  dummy-client-charm                    0  10.152.183.78   no       
+opensearch-k8s                     active      2  opensearch-k8s                        1  10.152.183.212  no       
+self-signed-certificates           active      1  self-signed-certificates  1/stable  586  10.152.183.91   no       
+
+Unit                         Workload  Agent      Address     Ports  Message
+client-charm/0*              active    idle       10.1.53.10         
+opensearch-k8s/0*            active    idle       10.1.53.19         
+opensearch-k8s/1             active    executing  10.1.53.21         (get-password) 
+self-signed-certificates/0*  active    idle       10.1.53.22         
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:943 Juju error logs:
+
+unit-opensearch-k8s-0: 01:50:37 ERROR juju.worker.proxyupdater error writing apt proxy config file: open /etc/apt/apt.conf.d/95-juju-proxy-settings: permission denied
+unit-opensearch-k8s-0: 01:51:00 ERROR unit.opensearch-k8s/0.juju-log An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:01 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:01 ERROR unit.opensearch-k8s/0.juju-log Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:01 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:02 ERROR unit.opensearch-k8s/0.juju-log An error occurred while purging initial default users: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:02 ERROR unit.opensearch-k8s/0.juju-log An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:02 ERROR unit.opensearch-k8s/0.juju-log Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:02 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:03 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:03 ERROR unit.opensearch-k8s/0.juju-log Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:03 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:04 ERROR unit.opensearch-k8s/0.juju-log certificates:4: An error occurred while purging initial default users: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:04 ERROR unit.opensearch-k8s/0.juju-log certificates:4: An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:04 ERROR unit.opensearch-k8s/0.juju-log certificates:4: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:04 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:04 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:05 ERROR unit.opensearch-k8s/0.juju-log certificates:4: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:05 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:06 ERROR unit.opensearch-k8s/0.juju-log certificates:4: An error occurred while purging initial default users: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:06 ERROR unit.opensearch-k8s/0.juju-log certificates:4: An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:06 ERROR unit.opensearch-k8s/0.juju-log certificates:4: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:06 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:06 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:06 ERROR unit.opensearch-k8s/0.juju-log certificates:4: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:07 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:08 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: An error occurred while purging initial default users: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:08 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:08 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:08 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:08 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:08 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:09 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:09 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:10 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: An error occurred while purging initial default users: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:10 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:10 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:10 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:10 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: An error occurred while checking profile requirements: Command failed: sysctl
+stdout=
+stderr=Container not connected
+unit-opensearch-k8s-0: 01:51:10 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:11 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: Error accessing the truststore path: Could not connect to Pebble: socket not found at '/charm/containers/opensearch/pebble.socket' (container restarted?)
+unit-opensearch-k8s-0: 01:51:11 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:0: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:51 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:53 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:53 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:55 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:56 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:2: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:51:59 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:52:00 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:52:03 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:52:14 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:54:43 ERROR unit.opensearch-k8s/0.juju-log certificates:4: Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:54:46 ERROR unit.opensearch-k8s/0.juju-log Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:54:53 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:54:54 ERROR unit.opensearch-k8s/0.juju-log Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:54:54 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:54:57 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:54:57 ERROR unit.opensearch-k8s/0.juju-log Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:54:57 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:54:59 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:55:00 ERROR unit.opensearch-k8s/0.juju-log certificates:4: Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:55:00 ERROR unit.opensearch-k8s/0.juju-log certificates:4: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:55:02 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:55:02 ERROR unit.opensearch-k8s/0.juju-log Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:55:02 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:55:04 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:55:05 ERROR unit.opensearch-k8s/0.juju-log Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:55:05 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:10 ERROR juju.worker.proxyupdater error writing apt proxy config file: open /etc/apt/apt.conf.d/95-juju-proxy-settings: permission denied
+unit-opensearch-k8s-1: 01:56:11 ERROR juju.worker.proxyupdater error writing apt proxy config file: open /etc/apt/apt.conf.d/95-juju-proxy-settings: permission denied
+unit-opensearch-k8s-1: 01:56:34 ERROR unit.opensearch-k8s/1.juju-log Missing cluster topology requirements: At least 1 cluster manager nodes and 1 data nodes are required.
+unit-opensearch-k8s-0: 01:56:34 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:35 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:36 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:36 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:36 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:37 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:38 ERROR unit.opensearch-k8s/1.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:38 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:38 ERROR unit.opensearch-k8s/1.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:40 ERROR unit.opensearch-k8s/0.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:40 ERROR unit.opensearch-k8s/1.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:40 ERROR unit.opensearch-k8s/0.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:41 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:42 ERROR unit.opensearch-k8s/0.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:42 ERROR unit.opensearch-k8s/0.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:43 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:44 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:44 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:45 ERROR unit.opensearch-k8s/1.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:46 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:46 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:46 ERROR unit.opensearch-k8s/1.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:48 ERROR unit.opensearch-k8s/1.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:48 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: Failed to delete voting exclusions set(): HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:48 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:49 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:50 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: Failed to delete voting exclusions set(): HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:50 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:50 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:51 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:52 ERROR unit.opensearch-k8s/1.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:52 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:52 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:56:53 ERROR unit.opensearch-k8s/1.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:54 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:54 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:56 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:56 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:58 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:56:58 ERROR unit.opensearch-k8s/0.juju-log upgrade-version-a:7: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:24 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:24 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:24 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:24 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:25 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:25 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:57:26 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:57:26 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:57:26 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:27 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:28 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:57:28 ERROR unit.opensearch-k8s/1.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:29 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:57:30 ERROR unit.opensearch-k8s/1.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:57:30 ERROR unit.opensearch-k8s/0.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:06 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:06 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:10 ERROR unit.opensearch-k8s/1.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:11 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:12 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:14 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:15 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:15 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:17 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: Failed to delete voting exclusions set(): HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:17 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: Failed to delete voting exclusions set(): HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:17 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:17 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:18 ERROR unit.opensearch-k8s/0.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:21 ERROR unit.opensearch-k8s/1.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:21 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:22 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:23 ERROR unit.opensearch-k8s/1.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:24 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:24 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:26 ERROR unit.opensearch-k8s/1.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:28 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:28 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:29 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:29 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:30 ERROR unit.opensearch-k8s/0.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:33 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:33 ERROR unit.opensearch-k8s/1.juju-log certificates:9: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:34 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:34 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:36 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:38 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:39 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:41 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:44 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:46 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 01:58:49 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:49 ERROR unit.opensearch-k8s/1.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:51 ERROR unit.opensearch-k8s/1.juju-log status-peers:8: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:54 ERROR unit.opensearch-k8s/1.juju-log node-lock-fallback:6: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:56 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: Failed to delete voting exclusions set(): HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 01:58:56 ERROR unit.opensearch-k8s/1.juju-log opensearch-peers:5: HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 02:01:30 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 02:01:31 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 02:01:31 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 02:01:33 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 02:01:33 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 02:01:37 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-1: 02:02:21 ERROR unit.opensearch-k8s/1.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-1.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 02:02:21 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+unit-opensearch-k8s-0: 02:02:23 ERROR unit.opensearch-k8s/0.juju-log HTTP error when checking cluster health: HTTP error self.response_code=None
+self.response_text='Host opensearch-k8s-0.opensearch-k8s-endpoints.testing.svc.cluster.local:9200 and alternative_hosts: [] not reachable.'
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:1025 Forgetting model main...
